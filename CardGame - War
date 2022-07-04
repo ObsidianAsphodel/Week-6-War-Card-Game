@@ -1,0 +1,57 @@
+class GameManager
+{
+    constructor
+    (youWin, youLose)
+
+    start()
+    {
+
+    }
+
+    compareCards()
+    {
+        
+    }
+}
+class Player
+{
+    constructor
+    (hand, points)
+    {
+        this.hand = [];
+        let points;
+    }
+
+    playCard()
+    {
+
+    }
+}
+class Card
+{
+    constructor
+    (name, rank, value,);
+}
+class Deck
+{
+    constructor();
+
+    createDeck()
+    {
+
+    }
+
+    shuffleDeck()
+    {
+
+    }
+}
+
+//New game starts
+//A new deck is created
+//The deck array is shuffled
+//Players are given 26 cards
+//Whichever player has the higher card gets the point. A tie results in no points given to either player
+//A new round repeats this process
+//After all the cards have been played, display the score.
+
