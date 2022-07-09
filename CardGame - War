@@ -1,3 +1,5 @@
+
+//Most of this code was written at 3AM
 class GameManager
 {
     constructor
@@ -21,14 +23,13 @@ class GameManager
 
         const newDeck = new Deck();
         newDeck.createDeck();
-        newDeck.shuffleDeck(newDeck.cards);
 
         this.players[0].playerCards = newDeck.cards.slice(0,26);
         this.players[0].hasCards = true;
         this.players[1].playerCards = newDeck.cards.slice(26,52);
         this.players[1].hasCards = true;
         
-        while(this.players[0].playerCards.length > 0 || this.players[1].playerCards.length > 0)
+        while(this.players[0].hasCards && this.players[1].hasCards)
         {
             this.pickACard();
         }
@@ -36,18 +37,28 @@ class GameManager
     }
     pickACard()
     {
-        console.log(this.players[0].playerCards);
-        let selection = Math.floor(Math.random() * this.players[0].playerCards.length)
-        let player1Choice = this.players[0].playerCards[selection];
-        console.log(player1Choice);
-        console.log(this.players[1].playerCards);
-        let selection2 = Math.floor(Math.random() * this.players[1].playerCards.length)
-        let player2Choice = this.players[1].playerCards[selection2];
-        console.log(player2Choice);
-        this.compareCards(player1Choice, player2Choice);
+        if(this.players[0].playerCards.length <= 0)
+        {
+            this.players[0].hasCards = false;
+        }
+        if(this.players[1].playerCards.length <= 0)
+        {
+            this.players[1].hasCards = false;
+        }
+        else {
+            let selection = Math.floor(Math.random() * this.players[0].playerCards.length)
+            let player1Choice = this.players[0].playerCards[selection];
+            console.log(player1Choice);
+            let selection2 = Math.floor(Math.random() * this.players[1].playerCards.length)
+            let player2Choice = this.players[1].playerCards[selection2];
+            console.log(player2Choice);
+            this.compareCards(player1Choice, player2Choice);
+        }
     }
     compareCards(player1Choice, player2Choice)
-    {
+    {   
+        console.log(this.players[0].playerCards, "Player 1 Cards");
+        console.log(this.players[1].playerCards, "Player 2 Cards");
         if(player1Choice.values > player2Choice.values)
         {
             this.players[0].points++;
@@ -60,22 +71,32 @@ class GameManager
             console.log(this.players[1].name + " wins this round!");
             console.log(this.players[1].points);
         }
+        if(player1Choice.values == player2Choice.values)
+        {
+            console.log("Tie! No points are given to either player");
+        }
         this.removeCards();
         this.pickACard();
     }
     removeCards(selection,selection2)
     {
         this.players[0].playerCards.splice(selection, 1);
-        console.log(this.players[0].playerCards);
         this.players[1].playerCards.splice(selection2,1);
-        console.log(this.players[1].playerCards);
     }
     comparePoints()
     {
         if(this.players[0].points > this.players[1].points)
         {
-            console.log(this.players[0].name + " wins!");
-            return;
+            alert(this.players[0].name + " wins with " + this.players[0].points + " points!");
+        }
+        if(this.players[1].points > this.players[0].points)
+        {
+            alert(this.players[1].name + " wins with " + this.players[1].points + " points!");
+        }
+        //Just in case both cpus have the same total of points at the end.
+        if(this.players[0].points == this.players[1].points)
+        {
+            alert("There was a tie!");
         }
     }
 }
@@ -109,14 +130,6 @@ class Deck
             }
         }
     }
-    shuffleDeck(array)
-    {
-        for(let i = array.length - 1; i > 0; i--)
-        {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], [array[j]] = [array[j]], [array[i]]];
-        }
-    }
 }
 class Player
 {
@@ -128,14 +141,7 @@ class Player
         this.points = points;
         this.hasCards = hasCards;
     }
-    noCards()
-    {
-        //
-        if(!hasCards && points > 0)
-        {
-            newGameManager.comparePoints();
-        }
-    }
+
 }
 let newGameManager = new GameManager;
 newGameManager.start();
